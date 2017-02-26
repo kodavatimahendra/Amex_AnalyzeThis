@@ -1,8 +1,7 @@
 """
-This is for the American Express Ananlyze This competition
-
-This uses Tensorflow to train a neural network. 
-Initially we normalize the data (something called batch normalization)
+This is based on MNIST tutorial in tensorflow website
+This memorizes ~70% of the training data which is (I don't know, probably bad).
+But hopefully a good starting point
 """
 
 import csv
@@ -16,26 +15,22 @@ import tensorflow as tf
 from tensorflow.contrib import rnn
 
 
-train_data_file = "Training_Dataset.csv"
-test_data_file = "Leaderboard_Dataset.csv"
-train_data_partial_file = "Twist_final_data.csv"
-test_data_2_file = "Final_Dataset.csv"
+train_data_file = "Datasets/Training_Dataset.csv"
+test_data_file = "Datasets/Leaderboard_Dataset.csv"
+train_data_partial_file = "Datasets/Twist_final_data.csv"
+test_data_2_file = "Datasets/Final_Dataset.csv"
 
 #Parameters
 learning_rate = 3e-3
-num_epochs = 100
 batch_size = 128
 display_step = 100
 
 #Network Parameters
 num_input = 32 # Data shape
-num_steps = 28 # timesteps
 num_hidden = 128 # hidden layer num of features
-num_layers = 1
-momentum = 0.9
 num_classes = 5 # 5 parties: Centaur, Cosmos, Ebony, Odyssey, Tokugawa
-num_examples = 50
-num_batches = 50
+num_examples = 20000
+num_batches = 20000
 num_batches_per_epoch = int(num_examples/batch_size)
 
 x = []
@@ -57,15 +52,13 @@ with open(train_data_file,'rb') as csvfile:
 
 train_inputs = np.asarray(y1)	
 train_targets = np.asarray(y2)
-print("hfisguashfg {}".format(np.any(np.isnan(train_targets))))
-print("hfisguashfg \n {}".format(np.any(np.isnan(train_inputs))))
 
 
 X = tf.placeholder(tf.float32,[None, num_input])
 w = tf.Variable(tf.truncated_normal([num_input, num_classes],stddev=0.1))
 b = tf.Variable(tf.constant(0.1,shape=[num_classes]))
 
-Y = tf.nn.softmax(tf.matmul(X,w)+b)
+Y = tf.nn.relu(tf.matmul(X,w)+b)
 Y_ = tf.placeholder(tf.float32,[None,num_classes])
 cross_entrophy = -tf.reduce_sum(Y_ * tf.log(Y))
 
