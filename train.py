@@ -1,7 +1,5 @@
 """
-This is based on MNIST tutorial in tensorflow website
-This memorizes ~70% of the training data which is (I don't know, probably bad).
-But hopefully a good starting point
+This gives training accuracy around 70% and test accuracy of ~57.5% which is bad.
 """
 
 import csv
